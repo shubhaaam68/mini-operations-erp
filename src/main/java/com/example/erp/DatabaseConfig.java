@@ -30,8 +30,13 @@ public class DatabaseConfig {
         String user = username;
         String pass = password;
 
-        // Normalize both Railway-style JDBC URLs and standard PostgreSQL URIs.
-        if (url != null && (url.startsWith("jdbc:postgresql://") || url.startsWith("postgresql://"))) {
+        if (url == null || url.isBlank()) {
+            url = "jdbc:h2:file:./data/erp;MODE=PostgreSQL;DB_CLOSE_DELAY=-1";
+            driver = "org.h2.Driver";
+            user = "sa";
+            pass = "";
+        } else if (url.startsWith("jdbc:postgresql://") || url.startsWith("postgresql://")) {
+            // Normalize PostgreSQL URIs so credentials are passed as Hikari properties.
             String uriText = url.startsWith("jdbc:") ? url.substring(5) : url;
             URI uri = URI.create(uriText);
             if (uri.getUserInfo() != null) {

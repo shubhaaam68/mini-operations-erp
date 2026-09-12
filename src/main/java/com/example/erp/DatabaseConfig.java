@@ -1,0 +1,58 @@
+package com.example.erp;
+
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import javax.sql.DataSource;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
+
+@Configuration
+public class DatabaseConfig {
+    @Value("${DATABASE_URL:}")
+    private String databaseUrl;
+
+    @Value("${DATABASE_DRIVER:org.h2.Driver}")
+    private String driver;
+
+    @Value("${DATABASE_USERNAME:sa}")
+    private String username;
+
+    @Value("${DATABASE_PASSWORD:}")
+    private String password;
+
+    @Bean
+    public DataSource dataSource() {
+        String url = databaseUrl;
+        String user = username;
+        String pass = password;
+
+        // Railway may provide a standard PostgreSQL URI (postgresql://user:pass@host/db).
+        // PostgreSQL's JDBC driver expects credentials as properties, so normalize it here.
+        if (url != null && url.startsWith("postgresql://")) {
+            URI uri = URI.create(url);
+            if (uri.getUserInfo() != null) {
+                String[] credentials = uri.getUserInfo().split(":", 2);
+                user = credentials[0];
+                if (credentials.length > 1) {
+                    pass = java.net.URLDecoder.decode(credentials[1], StandardCharsets.UTF_8);
+                }
+            }
+            String authority = uri.getHost();
+            if (uri.getPort() > 0) authority += ":" + uri.getPort();
+            url = "jdbc:postgresql://" + authority + uri.getRawPath()
+                    + (uri.getRawQuery() == null ? "" : "?" + uri.getRawQuery());
+            driver = "org.postgresql.Driver";
+        }
+
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl(url);
+        config.setUsername(user);
+        config.setPassword(pass);
+        config.setDriverClassName(driver);
+        return new HikariDataSource(config);
+    }
+}

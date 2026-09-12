@@ -1,5 +1,5 @@
 package com.example.erp.controller;
-import com.example.erp.model.Models.*;import com.example.erp.repo.Repos.*;import com.example.erp.service.ErpService;import org.springframework.security.access.prepost.PreAuthorize;import org.springframework.web.bind.annotation.*;import java.util.*;
+import com.example.erp.model.Models.*;import com.example.erp.repo.InventoryRepo;import com.example.erp.repo.WorkRepo;import com.example.erp.repo.TransferRepo;import com.example.erp.repo.OrderRepo;import com.example.erp.service.ErpService;import org.springframework.security.access.prepost.PreAuthorize;import org.springframework.web.bind.annotation.*;import java.util.*;
 @RestController @RequestMapping("/api") public class Api{final InventoryRepo inv;final WorkRepo wo;final TransferRepo tr;final OrderRepo ord;final ErpService s;Api(InventoryRepo i,WorkRepo w,TransferRepo t,OrderRepo o,ErpService s){inv=i;wo=w;tr=t;ord=o;this.s=s;}
 @GetMapping("/me") public Map<String,String> me(java.security.Principal p){return Map.of("username",p.getName());}
 @GetMapping("/inventory") public List<Inventory> inventory(){return inv.findAll();}

@@ -18,7 +18,7 @@ public class DatabaseConfig {
     @Value("${DATABASE_DRIVER:org.h2.Driver}")
     private String driver;
 
-    @Value("${DATABASE_USERNAME:sa}")
+    @Value("${DATABASE_USER:sa}")
     private String username;
 
     @Value("${DATABASE_PASSWORD:}")
@@ -36,7 +36,6 @@ public class DatabaseConfig {
             user = "sa";
             pass = "";
         } else if (url.startsWith("jdbc:postgresql://") || url.startsWith("postgresql://")) {
-            // Normalize PostgreSQL URIs so credentials are passed as Hikari properties.
             String uriText = url.startsWith("jdbc:") ? url.substring(5) : url;
             URI uri = URI.create(uriText);
             if (uri.getUserInfo() != null) {

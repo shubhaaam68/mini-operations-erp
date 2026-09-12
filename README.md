@@ -37,7 +37,9 @@ Includes checks for reservation over-commit, transfer over-commit and duplicate 
 Users, Inventory, WorkOrder, Transfer and CustomerOrder are relational entities. Inventory is uniquely constrained by item + location + batch. Transfers reference source/destination locations by value and preserve a clear Requested → Dispatched → Received lifecycle.
 
 ## Demo flow
-Login → Inventory → Work Order → Transfer → Dispatch/Receive in Swagger → Customer Reservation.
+Login → role-based dashboard → Inventory → Work Order → Transfer → Dispatch/Receive in Swagger → Customer Reservation.
 
 ## Note
 AI tools are permitted by the assessment brief. Candidates should understand the submitted code and be ready for live changes/verification.
+
+<!-- deployment marker: role-based responsive dashboard is on main -->

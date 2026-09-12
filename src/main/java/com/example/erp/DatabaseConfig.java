@@ -30,10 +30,10 @@ public class DatabaseConfig {
         String user = username;
         String pass = password;
 
-        // Railway may provide a standard PostgreSQL URI (postgresql://user:pass@host/db).
-        // PostgreSQL's JDBC driver expects credentials as properties, so normalize it here.
-        if (url != null && url.startsWith("postgresql://")) {
-            URI uri = URI.create(url);
+        // Normalize both Railway-style JDBC URLs and standard PostgreSQL URIs.
+        if (url != null && (url.startsWith("jdbc:postgresql://") || url.startsWith("postgresql://"))) {
+            String uriText = url.startsWith("jdbc:") ? url.substring(5) : url;
+            URI uri = URI.create(uriText);
             if (uri.getUserInfo() != null) {
                 String[] credentials = uri.getUserInfo().split(":", 2);
                 user = credentials[0];

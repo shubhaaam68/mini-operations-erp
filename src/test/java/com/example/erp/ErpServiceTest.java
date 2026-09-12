@@ -1,5 +1,5 @@
 package com.example.erp;
-import com.example.erp.model.Models.*;import com.example.erp.repo.Repos.*;import com.example.erp.service.ErpService;import org.junit.jupiter.api.Test;import org.mockito.*;import java.util.*;import static org.junit.jupiter.api.Assertions.*;import static org.mockito.Mockito.*;
+import com.example.erp.model.Models.*;import com.example.erp.repo.InventoryRepo;import com.example.erp.repo.TransferRepo;import com.example.erp.repo.OrderRepo;import com.example.erp.repo.WorkRepo;import com.example.erp.service.ErpService;import org.junit.jupiter.api.Test;import org.mockito.*;import java.util.*;import static org.junit.jupiter.api.Assertions.*;import static org.mockito.Mockito.*;
 class ErpServiceTest{
 @Mock InventoryRepo inv;@Mock TransferRepo tr;@Mock OrderRepo ord;@Mock WorkRepo wo;
 ErpService s;ErpServiceTest(){MockitoAnnotations.openMocks(this);s=new ErpService(inv,tr,ord,wo);}
